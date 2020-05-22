@@ -9,6 +9,8 @@ app.use(cors())
 //app.use(morgan('tiny'))
 morgan.token('body', function (req, res) { return JSON.stringify(req.body) })
 app.use(morgan(':method :url :status :response-time ms - :res[content-length] :body - :req[content-length]'))
+// Use build folder for frontend if exists
+app.use(express.static('build'))
 
 persons = [
   {
@@ -50,6 +52,19 @@ app.get('/api/persons/:id', (req, res) => {
   const id = Number(req.params.id)
   person = persons.find(p => p.id === id)
   if (person) {
+    res.json(person)
+  }
+  else {
+    res.status(404).end()
+  }
+})
+
+// Modaa tehtävään 3.17
+app.put('/api/persons/:id', (req, res) => {
+  const id = Number(req.params.id)
+  person = persons.find(p => p.id === id)
+  if (person) {
+    person.number = req.body.number
     res.json(person)
   }
   else {
