@@ -15,7 +15,7 @@ app.use(morgan(':method :url :status :response-time ms - :res[content-length] :b
 // Use build folder for frontend if exists
 app.use(express.static('build'))
 
-persons = [
+/*persons = [
   {
     "name": "Arto Hellas",
     "number": "040-123456",
@@ -41,7 +41,7 @@ persons = [
     "number": "414",
     "id": 6
   }
-]
+]*/
 
 app.get('/', (req, res) => {
   res.send('<h1>Hello World!</h1>')
@@ -70,7 +70,7 @@ app.get('/api/persons/:id', (req, res, next) => {
       res.status(404).end()
     }
   })
-  .catch(error => next(error))
+    .catch(error => next(error))
   /*  {
     console.log(error)
     res.status(400).send({error: 'malformed id'})
@@ -110,7 +110,7 @@ app.put('/api/persons/:id', (req, res, next) => {
 app.delete('/api/persons/:id', (req, res, next) => {
   /*const id = Number(req.params.id)
   persons = persons.filter(p => p.id !== id)
-  
+
   res.status(204).end()*/
 
   Person.findByIdAndRemove(req.params.id)
@@ -125,13 +125,13 @@ app.post('/api/persons', (req, res, next) => {
   const body = req.body
 
   if (!body.name || !body.number) {
-    return res.status(400).json({ 
-      error: 'Person name or number missing' 
+    return res.status(400).json({
+      error: 'Person name or number missing'
     })
   }
   if (persons.find(p => p.name === body.name)) {
-    return res.status(400).json({ 
-      error: 'Person name must be unique' 
+    return res.status(400).json({
+      error: 'Person name must be unique'
     })
   }
 
@@ -143,7 +143,7 @@ app.post('/api/persons', (req, res, next) => {
 
   console.log(person)
   persons = persons.concat(person)
-  
+
   res.json(person)*/
 
   const body = req.body
@@ -160,7 +160,7 @@ app.post('/api/persons', (req, res, next) => {
   person.save().then(savedPerson => {
     res.json(savedPerson)
   })
-  .catch(error => next(error))
+    .catch(error => next(error))
 })
 
 app.get('/info', (req, res) => {
@@ -184,10 +184,10 @@ const errorHandler = (error, req, res, next) => {
   console.error(error.message)
 
   if (error.name === 'CastError') {
-    return res.status(400).send({error: 'malformed id'})
+    return res.status(400).send({ error: 'malformed id' })
   }
   else if (error.name === 'ValidationError') {
-    return res.status(400).send({error: error.message})
+    return res.status(400).send({ error: error.message })
   }
 
   next(error)
